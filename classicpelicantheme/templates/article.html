@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %} 
+{{SITENAME}} - {{article.title}}
+{% endblock %}
+{% block content_title %} 
+<h1>{{article.title}}</h1>
+<p> 
+	by 
+	{% for author in article.authors %}
+	<span class="tag">
+		<a href="{{SITEURL}}/{{author.url}}">{{author}}</a>
+	</span> 
+	{% endfor %}
+   <span class="text-grey">on</span> {{article.date|strftime('%d %B %Y')}} 
+</p>
+{% endblock %}
+{% block content %}
+<div class="w3-margin">
+	{{article.content}}
+</div>
+{% endblock %}
+
+{% block tags_block %}
+{% for (tag, artcl) in tags %}
+{% if tag in article.tags %}
+<a href="{{SITEURL}}/{{tag.url}}" class="tag is-small bg-light">{{tag}}</a>
+{% else %} 
+<a href="{{SITEURL}}/{{tag.url}}" class="tag is-small">{{tag}}</a>
+{% endif %} 
+{% endfor %}
+{% endblock %}
