@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>{% block site_title %} {{SITENAME}} {% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral&display=swap" rel="stylesheet"> 
+
+    <style>
+      body,h1,h2,h3,h4,h5 {font-family: "Spectral", sans-serif}
+      body.dark {
+        --bg-color: #000;
+        --bg-secondary-color: #131316;
+        --font-color: #f5f5f5;
+        --color-grey: #ccc;
+        --color-darkGrey: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+
+      <!-- Top Vavigation Bar-->
+      <nav class="nav">
+		<div class="nav-left">
+		   <a href="{{SITEURL}}/index.html" class="brand">
+			  <h2>{{SITENAME}}</h2>
+		    </a>
+		</div>
+
+        <div class="nav-center">
+          {% if category %}
+          {% for (categori, article) in categories %}
+          {% if categori == category %}
+          <a href="{{SITEURL}}/{{categori.url}}" class="active">{{categori}}</a>
+          {% else %}
+          <a href="{{SITEURL}}/{{categori.url}}">{{categori}}</a>
+          {% endif %} 
+          {% endfor %}
+          {% else %} 
+          {% for (categori, article) in categories %}
+          <a href="{{SITEURL}}/{{categori.url}}">{{categori}}</a>
+          {% endfor %} 
+          {% endif %}
+        </div>
+
+        <div class="nav-right">
+		  {% for page in pages %}
+          <a href="{{SITEURL}}/{{page.url}}">{{page.title}}</a>
+		  {% endfor %}
+        </div>
+      </nav>
+      <!---->
+
+      <div class="row">
+        <!--Block for main content-->
+        <div class="col-8">
+          {% block content_title %} 
+          {% endblock %} 
+          {% block content %}
+          {% for article in articles_page.object_list %} 
+          <h2>{{article.title}}</h2>
+          <p> 
+              by 
+              {% for author in article.authors %}
+              <span class="tag">
+                  <a href="{{SITEURL}}/{{author.url}}">{{author}}</a>
+              </span> 
+              {% endfor %}
+             <span class="text-grey">on</span> {{article.date|strftime('%d %B %Y')}} 
+          </p>
+          <p>{{article.summary}}</p>
+          <a href="{{SITEURL}}/{{article.url}}" class="button outline primary">READ MORE</a>
+          {% endfor %}
+
+          <p style="margin-top: 3em;">
+            {% if articles_page.has_previous() %}
+            <a href="{{SITEURL}}/{{articles_previous_page.url}}"class="button dark">Previous</a>
+            {% endif %} 
+            {% if articles_page.has_next() %}
+            <a href="{{SITEURL}}/{{articles_next_page.url}}"class="button dark">Next</a>
+            {% endif %}
+          </p>
+          {% endblock %}
+        </div>
+        
+        <!---->
+        <!--Side content for tags and other info-->
+        <div class="col-4">        
+          <div class="card">
+            <header>
+              <h4>TAGS</h4>
+            </header>
+            <p style="line-height: 2.5em;">
+				{% block tags_block %}
+				{% if tag %}
+				{% for (tagg, article) in tags %}
+				{% if tagg == tag %} 
+				<a href="{{SITEURL}}/{{tagg.url}}" class="tag is-small bg-light">{{tagg}}</a>
+				{% else %}
+				<a href="{{SITEURL}}/{{tagg.url}}" class="tag is-small">{{tagg}}</a>
+				{% endif %} 
+				{% endfor %}
+				{% else %}
+				{% for (tagg,article) in tags %} 
+				<a href="{{SITEURL}}/{{tagg.url}}" class="tag is-small">{{tagg}}</a>
+				{% endfor %}
+				{% endif %}
+				{% endblock %}
+			</p>
+			
+          </div>
+        </div>
+        <!---->
+    </div>
+  </div>
+</body>
+</html>
