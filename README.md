@@ -11,4 +11,12 @@ A simple and classic theme for the pelican static site generator.
 * Responsive
 * No support for drafts and archives
 
-## Sample screen shots
+## Sample screenshots
+
+### Index page
+
+![Index page](examples/index.png "Index page")
+
+### Article page
+
+![Article page](examples/article.png "Article page")
